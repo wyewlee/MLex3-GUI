@@ -1,0 +1,150 @@
+<html>
+
+<head>
+    <title>
+        MWE, ENR, Mrj
+    </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidenav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/databaseContent2.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="crawler" id="a">Crawlers</a>
+        <a href="#" id="b">Mrj, MWE, ENR Generation </a>
+        <a href="/showDB" id="c"style='background-color: #0000A0'>MWE, ENR, Mrj</a>
+        <a href="#" id="d">Sentiment and Emotion</a>
+    </div>
+
+
+    <div id='mysqlInput' style="margin-left: 400px;">
+        <div style="display: table">
+            <div style="display: table-row;">
+                <div style="display: table-cell;">
+                    <a href="/MySql"><button>Initialize</button></a>
+                    <form id="getSql" name="getSql">
+                        <label for="MySql">MySQL</label>
+                        </br>
+                        <select id="MySql" name='MySql' size=5 style="width:250px;font-size: 16px;">
+                            <option value="P">Pick a table</option>
+                            <option value="staff">Staff</option>
+                            <option value="student">Student</option>
+                            <option value="classroom">Classroom</option>
+                            <option value="course">Course</option>
+                            <option value="grade">Grade</option>
+                        </select>
+                        <button type="submit" class="btn btn-default" id="mySqlOK">Query</button>
+                    </form>
+                </div>
+
+                <div style="display: table-cell;">
+                    <a href="/read"><button>Initialize</button></a>
+                    <form id="getSql" name="getSql">
+                        <label for="MongoDB">MongoDB</label>
+                        </br>
+                        <select id="MongoDB" name='MongoDB' size=5 style="width:250px;font-size: 16px;">
+                            <option value="P">Pick a table</option>
+                            <option value="staff">Accounts</option>
+                            <option value="student">Customers</option>
+                            <option value="classroom">Transactions</option>
+                        </select>
+                        <button type="submit" class="btn btn-default" id="mySqlOK">Query</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: table; margin-left: 400px; width: 625px; height: 400px;">
+        <div style="display: table-row;">
+            <div style="display: table-cell">
+                <label for="mysqlData">MySQL DATA</label>
+            </div>
+        </div>
+
+        <div style=" display: table-row; ">
+            <div style="display: table-cell; border: 1px solid black;">
+                <section>
+                    <div id="sqlBox" style="margin-left: 0px;">
+                        <table>
+                            <tr>
+                                <th> </th>
+                                {% for col in column_names %}
+                                <th>{{col}}</th>
+                                {% endfor %}
+                            </tr>
+                            {% for row in row_data %}
+                            <tr>
+                                <!-- loop counter -->
+                                <td>{{loop.index}}</td>
+                                {% for col, row_ in zip(column_names, row) %}
+                                <td>{{row_}}</td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+            </div>
+            </section>
+        </div>
+
+        <br>
+
+        <div style=" display: table-row; width: 625px; overflow: auto;">
+            <div style="display: table-cell">
+                <label for="MongoDBData"> MongoDB DATA</label>
+            </div>
+        </div>
+
+        <div style=" display: table-row;">
+            <div style="display: table-cell; border: 1px solid black;">
+                <div id="mongodbBox" style="margin-left: 0px;">
+                    <table>
+                        <tr>
+                            <th> </th>
+                            {% for col in column_names1 %}
+                            <th>{{col}}</th>
+                            {% endfor %}
+                        </tr>
+                        {% for row in row_data1 %}
+                        <tr>
+                            <!-- loop counter -->
+                            <td>{{loop.index}}</td>
+                            {% for col, row_ in zip(column_names1, row) %}
+                            <td>{{row_}}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#getSql').on('submit', function (event) {
+                $.ajax({
+                    data: {
+                        MySql: $('#MySql').val(),
+                    },
+                    type: 'POST',
+                    url: '/getSql'
+
+                });
+
+                event.preventDefault();
+
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>

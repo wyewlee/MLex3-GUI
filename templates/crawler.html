@@ -1,0 +1,220 @@
+<html>
+
+<head>
+    <title>
+        Crawlers
+    </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidenav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/crawlerContent.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+</head>
+
+<style>
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      border-bottom: 1px dotted black;
+    }
+    
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 150px;
+      background-color: black;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+    
+      /* Position the tooltip */
+      position: absolute;
+      z-index: 1;
+    }
+    
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+    }
+    </style>
+
+<body>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="/crawler" id="a" style='background-color: #0000A0'>Crawlers</a>
+        <a href="b.html" id="b">Mrj, MWE, ENR Generation </a>
+        <a href="connectDB.html" id="c">MWE, ENR, Mrj</a>
+        <a href="d.html" id="d">Sentiment and Emotion</a>
+        
+    </div>
+
+        
+    </div>
+    <div id='crawlerInput'  style="margin-left: 23%; display: table; width:70%;">
+        <div class="column">
+            
+
+            <form id='getKw' name='getName'>
+                <label for="kwInput" style = "margin-top:250px;">Keywords/ID</label>
+                </br>
+                <input type="text" id="kwInput" name="kwInput" style="width:250px">
+                <button type="submit" class="btn btn-default" id="KWOK">Use</button>
+            </form>
+            <form id='getNum' name='getNum'>
+                <label for="numInput" style = "margin-top:250px;">Num. of posts/videos to crawl</label>
+                <div class="tooltip">(info)
+                    <span class="tooltiptext">For Facebook crawler please enter a number in hundreds (preferably 100 or 200) as it crawls by hundreds.</span>
+                  </div>
+                  
+                </br>
+                <input type="text" id="numInput" name="numInput" style="width:250px">
+                <button type="submit" class="btn btn-default" id="numOK">Use</button>
+            </form>
+            <form id="getCrawler" name="getCrawler" >
+                <label for="crawler">Crawler</label>
+                </br>
+                <select id="crawler" name='crawler' size=5 style="width:250px;font-size: 16px;">
+                    <option value="TW">Twitter</option>
+                    <option value="YT">YouTube</option>
+                    <option value="FB">Facebook</option>
+                    <option value="IG">Instagram</option>
+                    <option value="RD">Reddit</option>
+                </select>
+                <button type="submit" class="btn btn-default" id="crawlerOK">Crawl</button>
+            </form>
+            <form id="getDir" method="POST" action='/getDir'>
+                <label for="dir">File directory</label>
+                </br>
+                <input type="text" id="dir" name="dir" style="width:250px" value="C:\">
+                <button type="submit" class="btn btn-default" id="dirOK">OK</button>
+            </form>
+        </div>
+        
+
+        <div class='column' style='margin-left:5%'>
+            Message Box
+            <br>
+            <div id="messageBox">
+                <p id="message"></p>
+            </div>
+        </div>
+
+        
+
+    <script>
+        var message = ""
+        $(document).ready(function () {
+            $('#getCrawler').on('submit', function (event) {
+                message = message + "<br>" + $("#crawler option:selected").text() + " crawler has been selected.<br>" + $("#crawler option:selected").text() + " crawler is running..."
+                document.getElementById('message').innerHTML = message
+                messageBox = document.getElementById('messageBox'); 
+                var xH = messageBox.scrollHeight; 
+                messageBox.scrollTo(0, xH);
+                $.ajax({
+                    data: {
+                        crawler: $('#crawler').val(),
+                    },
+                    type: 'POST',
+                    url: '/getCrawler'
+                }).done(function (data) {
+                    console.log(data);
+                    message = message + "<br>" + $("#crawler option:selected").text() + " " + data['result'];
+                    document.getElementById('message').innerHTML = message
+                    messageBox = document.getElementById('messageBox'); 
+                    var xH = messageBox.scrollHeight; 
+                    messageBox.scrollTo(0, xH);
+                });
+
+                event.preventDefault();
+
+            });
+
+        });
+
+        $(document).ready(function () {
+            $('#getKw').on('submit', function (event) {
+                message = message + "<br>" + "Keyword/ID '"  + $('#kwInput').val() + "' has been entered."
+                document.getElementById('message').innerHTML = message
+                messageBox = document.getElementById('messageBox'); 
+                var xH = messageBox.scrollHeight; 
+                messageBox.scrollTo(0, xH);
+                $.ajax({
+                    data: {
+                        kwInput: $('#kwInput').val(),
+                    },
+                    type: 'POST',
+                    url: '/getKw'
+                }).done(function (data) {
+                });
+
+                event.preventDefault();
+
+            });
+
+        });
+
+        $(document).ready(function () {
+            $('#getNum').on('submit', function (event) {
+                if ( $('#numInput').val()>=0){
+                    message = message + "<br>" + $('#numInput').val()+ " number of posts/videos to crawl."
+                    document.getElementById('message').innerHTML = message
+                    messageBox = document.getElementById('messageBox'); 
+                }
+                
+                var xH = messageBox.scrollHeight; 
+                messageBox.scrollTo(0, xH);
+                $.ajax({
+                    data: {
+                        numInput: $('#numInput').val(),
+                    },
+                    type: 'POST',
+                    url: '/getNum'
+                }).done(function (data) {
+                    console.log(data);
+                    if ( $('#numInput').val()<0){
+                        message = message + "<br>" + data['result'];
+                        document.getElementById('message').innerHTML = message
+                        messageBox = document.getElementById('messageBox'); 
+                    }
+                    var xH = messageBox.scrollHeight; 
+                    messageBox.scrollTo(0, xH);
+                });
+
+                event.preventDefault();
+
+            });
+
+        });
+    </script>
+    </div>
+
+    <br>
+
+    <div id="csvBox1" style="white-space: nowrap;">
+
+        {% for csv in csv_list %}
+        <a href="/getCSV?csvName={{csv}}" style="text-decoration: none; color: #48574c;">{{csv}}</a>
+        <br>
+        {% endfor %}
+    </div>
+
+    <div id="csvBox2">
+        <p style="text-align: center"> {{msg}} </p>
+        <table>
+            <tr>
+                <th> </th>
+                {% for col in column_names %}
+                <th>{{col}}</th>
+                {% endfor %}
+            </tr>
+            {% for row in row_data %}
+            <tr>
+                <!-- loop counter -->
+                <td>{{loop.index}}</td>
+                {% for col, row_ in zip(column_names, row) %}
+                <td>{{row_}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+
+</html>

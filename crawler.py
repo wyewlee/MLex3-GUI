@@ -1,0 +1,211 @@
+from flask import Flask, render_template, request, jsonify, make_response
+import pandas as pd
+from os import listdir, system
+from os.path import isfile, join, getctime
+import websockets
+import asyncio
+#from flask_socketio import SocketIO, send
+
+app = Flask(__name__)
+message = ""
+global csvFolder
+#csvFolder = r'assets\csv'
+csvFolder = r'../csv/'
+# create index route
+@app.route('/', methods=['POST','GET'])
+def index():
+    return render_template("index.html", message = message)
+
+
+@app.route('/crawler')
+def crawlerindex():
+
+    csvwlcmsg = 'Choose CSV on the left box to show contents!'
+    #test show csv
+    csvList = [f for f in listdir(csvFolder) if isfile(join(csvFolder, f))]
+
+    return render_template("crawler.html", csv_list = csvList, msg=csvwlcmsg)
+
+@app.route('/getCSV')
+def getCSV():
+
+    #test show csv
+    csvList = [f for f in listdir(csvFolder) if isfile(join(csvFolder, f))]
+
+    #receive csvname parameter
+    csvName = request.args.get('csvName')
+
+    #read csv
+    pd.set_option('display.max_rows', None)
+    df = pd.read_csv(join(csvFolder, csvName))
+
+    return render_template("crawler.html", column_names=df.columns.values, row_data=list(df.values.tolist()), zip=zip, csv_list = csvList)
+
+
+@app.route('/getCrawler', methods=['POST', 'GET'])
+def crawler():
+    if request.method == 'POST':
+        crawler = request.form['crawler']
+        sucMsg = "crawler has succesfully run! Please refresh the page to see the CSV file. CSV generated: "
+        failMsg = "crawler has failed to run."
+        if crawler == "TW":
+            try:
+                old_list = getFiles()
+                result = system('python twitter.py')
+                if result == 0:
+                    print("Crawler run successful")
+                    csv_list = getGeneratedCSV(old_list)
+                    print(csv_list)
+                    for csv in csv_list:
+                        sucMsg += '<br>'+ csv
+                    return jsonify({'result': sucMsg})
+                else:
+                    print("Run failed")
+                    return jsonify({'result': failMsg})
+            except:
+                return jsonify({'result': failMsg})
+        elif crawler == "YT":
+            try:
+                old_list = getFiles()
+                result = system('python youtube.py')
+                if result == 0:
+                    print("Crawler run successful")
+                    csv_list = getGeneratedCSV(old_list)
+                    print(csv_list)
+                    for csv in csv_list:
+                        sucMsg += '<br>'+ csv
+                    return jsonify({'result': sucMsg})
+                else:
+                    print("Run failed")
+                    return jsonify({'result': failMsg})
+            except:
+                return jsonify({'result': failMsg})
+        elif crawler == "FB":
+            try:
+                old_list = getFiles()
+                result = system('python Facepager/src/Facepager.py')
+                if result == 0:
+                    print("Crawler run successful")
+                    csv_list = getGeneratedCSV(old_list)
+                    print(csv_list)
+                    for csv in csv_list:
+                        sucMsg += '<br>'+ csv
+                    return jsonify({'result': sucMsg})
+                else:
+                    print("Run failed")
+                    return jsonify({'result': failMsg})
+            except:
+                return jsonify({'result': failMsg})
+        elif crawler == "IG":
+            try:
+                old_list = getFiles()
+                result = system('python ig.py')
+                if result == 0:
+                    print("Crawler run successful")
+                    csv_list = getGeneratedCSV(old_list)
+                    print(csv_list)
+                    for csv in csv_list:
+                        sucMsg += '<br>'+ csv
+                    return jsonify({'result': sucMsg})
+                else:
+                    print("Run failed")
+                    return jsonify({'result': failMsg})
+            except:
+                return jsonify({'result': failMsg})
+        elif crawler == "RD":
+            # to be updated
+            try:
+                old_list = getFiles()
+                result = system('python reddit.py')
+                if result == 0:
+                    print("Crawler run successful")
+                    csv_list = getGeneratedCSV(old_list)
+                    print(csv_list)
+                    for csv in csv_list:
+                        sucMsg += '<br>'+ csv
+                    return jsonify({'result': sucMsg})
+                else:
+                    print("Run failed")
+                    return jsonify({'result': failMsg})
+            except:
+                return jsonify({'result': failMsg})
+    else:
+        return render_template('crawler.html')
+
+@app.route('/getKw', methods=['POST', 'GET'])
+def kw():
+    if request.method == 'POST':
+        kw = request.form['kwInput']
+        with open("input.txt", "r") as file:
+            lines = file.readlines()
+            print('lines: ', end='')
+            print(lines)
+        lines[0] = kw +'\n'
+        
+        with open("input.txt", "w") as file:
+            for line in lines:
+                file.write(line)
+        return jsonify({'result': 'Keyword entered'})
+    else:
+        return render_template('crawler.html')
+
+@app.route('/getNum', methods=['POST', 'GET'])
+def num():
+    if request.method == 'POST':
+        num = request.form['numInput']
+
+        try:
+
+            if eval(num)<0:
+                print('Number less than 0')
+                return ({'result':'Number entered failed. Please enter a valid number.'})
+            else:
+                with open("input.txt", "r") as file:
+                    lines = file.readlines()
+                    print('lines: ', end='')
+                    print(lines)
+                lines[1] = num +'\n'
+                
+                with open("input.txt", "w") as file:
+                    for line in lines:
+                        file.write(line)
+                return ({'result':'Number entered successfully'})
+        except:
+            return ({'result':'Number entered failed'})
+    else:
+        return render_template('crawler.html')
+        
+@app.route('/getDir', methods=['POST', 'GET'])
+def dir():
+    csvwlcmsg = 'Choose CSV on the left box to show contents!'
+    if request.method == 'POST':
+        try:
+            global csvFolder
+            csvFolder = request.form["dir"]
+            csvList = listdir(csvFolder)
+        except:
+            return render_template("crawler.html")
+        
+    return render_template("crawler.html", csv_list = csvList, msg=csvwlcmsg)
+
+def getGeneratedCSV(old_list):
+    csv_list = getFiles()
+    print('oldlist: ', end='')
+    print(old_list)
+    generated = [file for file in csv_list if file not in old_list]
+    print(generated)
+    return generated   
+
+def getFiles():
+    path = '../csv/'
+    list_of_files = listdir(path)
+    csv_list = []
+    for file in list_of_files:
+        if file.endswith('.csv'):
+            csv_list.append(file)
+    print('current list: ', end='')
+    print(csv_list)
+    return csv_list
+
+if __name__ == "__main__":
+    app.run(debug=True)

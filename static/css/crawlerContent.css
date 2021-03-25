@@ -1,0 +1,60 @@
+.column{
+    float:left;
+}
+#messageBox{
+    height:35vh;
+    width:40vw;
+    border:1px solid #ccc;
+    font:16px/26px Georgia, Garamond, Serif;
+    overflow:auto;
+    margin-top:0px;
+}
+/* CSS for bottom two part box */
+
+#csvBox1 {
+    float: left;
+    height: 75vmin;
+    width: 10vw;
+    max-height: 75vmin;
+    max-width: 10vw;
+    border: 2px solid black;
+    font-size: 20px;
+    overflow: auto;
+    margin-left: 23%;
+}
+
+#csvBox2 {
+    float: left;
+    height: 75vmin;
+    width: 60%;
+    max-height: 75vmin;
+    max-width: 70vw;
+    border: 2px solid black;
+    font-size: 20px;
+    overflow: auto;
+    margin-left: 15px;
+}
+
+/* Yew Lee's Table CSS starts here */
+
+table {
+    position: static;
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+
+}
+
+td,
+th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+/* HW's Css */
+
