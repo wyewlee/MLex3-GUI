@@ -1,6 +1,5 @@
 flask
 pandas
-os
 websockets
 asyncio
 bson

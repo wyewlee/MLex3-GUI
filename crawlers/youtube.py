@@ -340,7 +340,7 @@ with open("input.txt", "r") as file:
     num_video =eval(num_video)
 #Marvel Entertainment
 
-dirly=join('assets','csv','')
+dirly=join('assets','csv')
 #Create comment csv
 Gyoutubefilename=createfilename(dirly)
 Gcsv = start_csv(Gyoutubefilename)

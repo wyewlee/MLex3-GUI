@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify, make_response
 import pandas as pd
-from os import listdir, system,chdir
-from os.path import isfile, join, getctime
+from os import listdir, system,chdir,getcwd
+from os.path import isfile, join, getctime, abspath
 import websockets
 import asyncio
 #from flask_socketio import SocketIO, send
@@ -12,11 +12,13 @@ message = ""
 global csvFolder
 global csv_path
 global crawlerFolder
+global homepath
 
 assetsFolder = join("assets")
 csvFolder = join("csv")
 csv_path = join(assetsFolder,csvFolder)
 crawlerFolder = join("crawlers")
+homepath=abspath(join('../..'))
 
 
 # create index route
@@ -59,6 +61,7 @@ def crawler():
                 old_list = getFiles()
                 chdir(crawlerFolder)
                 result = system('python twitter.py')
+                chdir(homepath)
                 if result == 0:
                     print("Crawler run successful")
                     csv_list = getGeneratedCSV(old_list)
@@ -76,6 +79,7 @@ def crawler():
                 old_list = getFiles()
                 chdir(crawlerFolder)
                 result = system('python youtube.py')
+                chdir(homepath)
                 if result == 0:
                     print("Crawler run successful")
                     csv_list = getGeneratedCSV(old_list)
@@ -113,12 +117,14 @@ def crawler():
                 old_list = getFiles()
                 chdir(crawlerFolder)
                 result = system('python igv2_deploy.py')
+                chdir(homepath)
                 if result == 0:
                     print("Crawler run successful")
                     csv_list = getGeneratedCSV(old_list)
                     print(csv_list)
                     for csv in csv_list:
                         sucMsg += '<br>'+ csv
+                    chdir(homepath)
                     return jsonify({'result': sucMsg})
                 else:
                     print("Run failed")
@@ -131,12 +137,15 @@ def crawler():
                 old_list = getFiles()
                 chdir(crawlerFolder)
                 result = system('python reddit.py')
+                chdir(homepath)
                 if result == 0:
                     print("Crawler run successful")
                     csv_list = getGeneratedCSV(old_list)
                     print(csv_list)
                     for csv in csv_list:
                         sucMsg += '<br>'+ csv
+                    chdir(homepath)
+                    print(getcwd())
                     return jsonify({'result': sucMsg})
                 else:
                     print("Run failed")
@@ -150,13 +159,13 @@ def crawler():
 def kw():
     if request.method == 'POST':
         kw = request.form['kwInput']
-        with open("input.txt", "r") as file:
+        with open(join('crawlers','input.txt'), "r") as file:
             lines = file.readlines()
             print('lines: ', end='')
             print(lines)
         lines[0] = kw +'\n'
         
-        with open("input.txt", "w") as file:
+        with open(join('crawlers','input.txt'), "w") as file:
             for line in lines:
                 file.write(line)
         return jsonify({'result': 'Keyword entered'})
@@ -174,13 +183,13 @@ def num():
                 print('Number less than 0')
                 return ({'result':'Number entered failed. Please enter a valid number.'})
             else:
-                with open("input.txt", "r") as file:
+                with open(join('crawlers','input.txt'), "r") as file:
                     lines = file.readlines()
                     print('lines: ', end='')
                     print(lines)
                 lines[1] = num +'\n'
                 
-                with open("input.txt", "w") as file:
+                with open(join('crawlers','input.txt'), "w") as file:
                     for line in lines:
                         file.write(line)
                 return ({'result':'Number entered successfully'})
