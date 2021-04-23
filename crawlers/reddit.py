@@ -9,7 +9,9 @@ reddit = praw.Reddit(client_id='2L4M15duljh4ZQ',
                      client_secret='YeX3suRgyp-u2AFvDehx1o_twft6ww', 
                      user_agent='FYP crawler')
 
-with open("input.txt", "r") as file:
+inputPath = join('..','input.txt')
+
+with open(inputPath, "r") as file:
     lines = file.readlines()
     print('lines: ', end='')
     print(lines)

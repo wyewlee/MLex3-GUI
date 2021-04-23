@@ -1,0 +1,13 @@
+flask
+pandas
+os
+websockets
+asyncio
+bson
+pymongo
+flask_mysqldb
+datetime
+google-api-python-client
+tweepy
+praw
+selenium 
