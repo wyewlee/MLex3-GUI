@@ -11,7 +11,8 @@ global code_list
 global handle
 global json
 global driverPath
-driverPath = join('..','assets','dependency','chromedriver.exe')
+# driverPath = join('..','assets','dependency','89chromedriver.exe') version89
+driverPath = join('..','assets','dependency','90chromedriver.exe') #version90
 browser = webdriver.Chrome(executable_path=driverPath)
 directory = join('..','assets','csv','')
 global_csvname = ''
@@ -55,7 +56,7 @@ def login():
         pass
 
 
-def getShortCode(handle,n):
+def getShortCode(handle):
 
     browser.get('https://www.instagram.com/'+handle+'/?__a=1')
 
@@ -63,13 +64,13 @@ def getShortCode(handle,n):
 
     code_list = re.findall(r"\"shortcode\":\"(.*?)\",", resp)
 
-    return code_list[n]
+    return code_list
 
 
-def getComments(code_list):
+def getComments(code_list,n):
     text_list = list()
     counter = 0
-    for code in code_list:
+    for code in code_list[:n]:
         counter += 1
         print("done" + str(counter) + ", " + str(len(code_list)) + " Maximum runs.")
         browser.get('https://www.instagram.com/p/'+code+'/?__a=1')
@@ -122,7 +123,8 @@ login()
 handle = keyword
 global_csvname = createCSV()
 initCSV(global_csvname)
-code_list = getShortCode(handle,num_post)
-getComments(code_list)
+code_list = getShortCode(handle)
+getComments(code_list,num_post)
+browser.quit()
 
 print("Done Crawled.")
