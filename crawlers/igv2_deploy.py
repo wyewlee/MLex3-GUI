@@ -11,20 +11,24 @@ global code_list
 global handle
 global json
 global driverPath
-driverPath = join('assets','dependency','chromedriver.exe')
+driverPath = join('..','assets','dependency','chromedriver.exe')
 browser = webdriver.Chrome(executable_path=driverPath)
-directory = join('assets','csv')
+directory = join('..','assets','csv','')
 global_csvname = ''
 global global_csvfilename
 
-# def setHandle():
-#     f = open("input.txt", "r")
-#     return handle = f.read()
+with open('input.txt', "r") as file:
+    lines = file.readlines()
+    print('lines: ', end='')
+    print(lines)
+    keyword = lines[0].strip('\n')
+    num_post = lines[1].strip('\n')
+    num_post =eval(num_post)
 
 def login():
 
     username = '1906837crawler'
-    pw = '1906837CRAWLER'
+    pw = '1906837'
 
     browser.get('https://www.instagram.com/')
     sleep(5)
@@ -51,7 +55,7 @@ def login():
         pass
 
 
-def getShortCode(handle):
+def getShortCode(handle,n):
 
     browser.get('https://www.instagram.com/'+handle+'/?__a=1')
 
@@ -59,7 +63,7 @@ def getShortCode(handle):
 
     code_list = re.findall(r"\"shortcode\":\"(.*?)\",", resp)
 
-    return code_list
+    return code_list[n]
 
 
 def getComments(code_list):
@@ -115,10 +119,10 @@ def createCSV():
 
 login()
 # handle = setHandle()
-handle = 'muhyiddinyassin_official'
+handle = keyword
 global_csvname = createCSV()
 initCSV(global_csvname)
-code_list = getShortCode(handle)
+code_list = getShortCode(handle,num_post)
 getComments(code_list)
 
 print("Done Crawled.")
