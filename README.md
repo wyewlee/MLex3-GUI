@@ -1,4 +1,5 @@
-# processor
+# GUI
 
-### ConnectDB.py - Jiacheng and Chenzhen
-### Crawler.py  - Yew Lee and Huay Wen
+### run Crawler.py to access crawler flask menu
+
+### How to install requirements? "pip install -r requirements.txt"
