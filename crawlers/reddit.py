@@ -3,15 +3,14 @@ import csv
 import pandas as pd
 import datetime as datetime
 from datetime import datetime
-from os.path import join
+from os.path import join,dirname
 
 reddit = praw.Reddit(client_id='2L4M15duljh4ZQ', 
                      client_secret='YeX3suRgyp-u2AFvDehx1o_twft6ww', 
                      user_agent='FYP crawler')
 
-inputPath = join('..','input.txt')
 
-with open(inputPath, "r") as file:
+with open('input.txt', "r") as file:
     lines = file.readlines()
     print('lines: ', end='')
     print(lines)
@@ -65,7 +64,7 @@ topics_data['url'] = url
 topics_data
 
 #csvFileDetail = '../csv/RD_details_'+keyword+'_'+Cdate+'_'+Ctime+'.csv'
-csvPath = join('assets','csv')
+csvPath = join('..','assets','csv','')
 topics_data.to_csv(csvPath+'RD_details_'+keyword+'_'+Cdate+'_'+Ctime2+'.csv', index=False) 
 
 url_list = topics_data['url']
