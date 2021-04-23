@@ -99,3 +99,5 @@ for url in url_list:
             except:
                 print("error "+str(IOError))
                 continue
+
+    print("done crawling")

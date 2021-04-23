@@ -17,9 +17,9 @@ global homepath
 assetsFolder = join("assets")
 csvFolder = join("csv")
 csv_path = join(assetsFolder,csvFolder)
-crawlerFolder = join("crawlers")
-homepath=abspath(join('../..'))
 
+crawlerFolder = join("crawlers")
+homepath='..'
 
 # create index route
 @app.route('/', methods=['POST','GET'])
@@ -61,7 +61,6 @@ def crawler():
                 old_list = getFiles()
                 chdir(crawlerFolder)
                 result = system('python twitter.py')
-                chdir(homepath)
                 if result == 0:
                     print("Crawler run successful")
                     csv_list = getGeneratedCSV(old_list)
@@ -79,7 +78,6 @@ def crawler():
                 old_list = getFiles()
                 chdir(crawlerFolder)
                 result = system('python youtube.py')
-                chdir(homepath)
                 if result == 0:
                     print("Crawler run successful")
                     csv_list = getGeneratedCSV(old_list)
@@ -117,14 +115,12 @@ def crawler():
                 old_list = getFiles()
                 chdir(crawlerFolder)
                 result = system('python igv2_deploy.py')
-                chdir(homepath)
                 if result == 0:
                     print("Crawler run successful")
                     csv_list = getGeneratedCSV(old_list)
                     print(csv_list)
                     for csv in csv_list:
                         sucMsg += '<br>'+ csv
-                    chdir(homepath)
                     return jsonify({'result': sucMsg})
                 else:
                     print("Run failed")
@@ -137,20 +133,20 @@ def crawler():
                 old_list = getFiles()
                 chdir(crawlerFolder)
                 result = system('python reddit.py')
-                chdir(homepath)
                 if result == 0:
                     print("Crawler run successful")
                     csv_list = getGeneratedCSV(old_list)
+                    print("print test")
                     print(csv_list)
                     for csv in csv_list:
                         sucMsg += '<br>'+ csv
-                    chdir(homepath)
                     print(getcwd())
                     return jsonify({'result': sucMsg})
                 else:
                     print("Run failed")
                     return jsonify({'result': failMsg})
             except:
+                print("exception")
                 return jsonify({'result': failMsg})
     else:
         return render_template('crawler.html')
@@ -212,6 +208,7 @@ def dir():
     return render_template("crawler.html", csv_list = csvList, msg=csvwlcmsg)
 
 def getGeneratedCSV(old_list):
+    chdir(homepath)
     csv_list = getFiles()
     print('oldlist: ', end='')
     print(old_list)
