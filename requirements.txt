@@ -8,6 +8,7 @@ flask_mysqldb
 datetime
 google-api-python-client
 google-api-client
+google-auth-oauthlib google-auth-httplib2
 tweepy
 praw
 selenium 
