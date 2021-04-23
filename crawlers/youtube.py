@@ -4,10 +4,12 @@ from datetime import datetime
 from apiclient.discovery import build
 import pandas as pd
 from os.path import join
+from os import chdir
 
 #Comment CSV
 Gyoutubefilename=" "
 Gcsvfile=" "
+#dirly=join('MLEX3-GUI','assets','csv','')
 
 def start_csv(csvfilename):
     global Gyoutubefilename
@@ -43,7 +45,7 @@ def createfilename(dirly):
     global Gyoutubefilename
     anow = datetime.now()
     adatetime = anow.strftime("%m%d%Y_%H%M%S")
-    Gyoutubefilename = dirly+"youtube_"+keyword+"_"+adatetime+".csv"    
+    Gyoutubefilename = dirly+"yt_"+keyword+"_"+adatetime+".csv"    
     print(Gyoutubefilename, " newly created.")
     print("*4* Gyoutubefilename=",Gyoutubefilename," **")
     return Gyoutubefilename
@@ -119,10 +121,10 @@ def append_data(comment_id,
 Gyoutubefilename1=" "
 Gcsvfile1=" "
 
-def start_csv1(csvfilename):
+def start_csv1(csvfilename1):
     global Gyoutubefilename1
     global Gcsvfile1
-    csvfile=open(csvfilename, 'w', newline='', encoding="utf-8")    
+    csvfile=open(csvfilename1, 'w', newline='', encoding="utf-8")    
     csvwriter = csv.writer(csvfile)
     csvwriter.writerow(['replies_id',
                      'replies_video_id', 
@@ -151,7 +153,7 @@ def createfilename1(dirly):
     global Gyoutubefilename1
     anow = datetime.now()
     adatetime = anow.strftime("%m%d%Y_%H%M%S")
-    Gyoutubefilename1 = dirly+"youtube_"+"reply_"+keyword+"_"+adatetime+".csv"    
+    Gyoutubefilename1 = dirly+"yt_"+"reply_"+keyword+"_"+adatetime+".csv"    
     print(Gyoutubefilename1, " newly created.")
     print("*4* Gyoutubefilename1=",Gyoutubefilename1," **")
     return Gyoutubefilename1
@@ -331,7 +333,9 @@ def get_all_comments(video_id):
 #Insert how many videos that would like to crawl
 #num_video = 3
 
-with open("input.txt", "r") as file:
+#inputPath = join('..','input.txt')
+#chdir("../MLEX3-")
+with open('input.txt', "r") as file:
     lines = file.readlines()
     print('lines: ', end='')
     print(lines)
@@ -340,7 +344,10 @@ with open("input.txt", "r") as file:
     num_video =eval(num_video)
 #Marvel Entertainment
 
-dirly=join('assets','csv')
+#assets\csv\instagram_muhyiddinyassin_official_04232021_152131.csv
+
+#dirly=join('..','MLEX3-GUI','assets','csv','')
+dirly='../assets/csv/'
 #Create comment csv
 Gyoutubefilename=createfilename(dirly)
 Gcsv = start_csv(Gyoutubefilename)
@@ -389,4 +396,4 @@ for x in range(num_video):
 end_csv(Gcsvfile)
 end_csv1(Gcsvfile1)
 
-print('END ALREADY')
+print('Done Crawling')

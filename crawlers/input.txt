@@ -1,2 +1,2 @@
-apple
-2
+amazon
+1
