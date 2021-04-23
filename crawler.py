@@ -7,10 +7,19 @@ import asyncio
 #from flask_socketio import SocketIO, send
 
 app = Flask(__name__)
+
 message = ""
 global csvFolder
-#csvFolder = r'assets\csv'
-csvFolder = r'../csv/'
+global csv_path
+global crawlerFolder
+global crawler_path
+
+assetsFolder = join("assets")
+csvFolder = join("csv")
+csv_path = join(assetsFolder,csvFolder)
+crawlerFolder = join("crawlers")
+
+
 # create index route
 @app.route('/', methods=['POST','GET'])
 def index():
@@ -21,27 +30,25 @@ def index():
 def crawlerindex():
 
     csvwlcmsg = 'Choose CSV on the left box to show contents!'
-    #test show csv
-    csvList = [f for f in listdir(csvFolder) if isfile(join(csvFolder, f))]
+    csvList = [f for f in listdir(csv_path) if isfile(join(csv_path, f))]
 
     return render_template("crawler.html", csv_list = csvList, msg=csvwlcmsg)
 
 @app.route('/getCSV')
 def getCSV():
 
-    #test show csv
-    csvList = [f for f in listdir(csvFolder) if isfile(join(csvFolder, f))]
+    csvList = [f for f in listdir(csv_path) if isfile(join(csv_path, f))]
 
     #receive csvname parameter
     csvName = request.args.get('csvName')
 
     #read csv
     pd.set_option('display.max_rows', None)
-    df = pd.read_csv(join(csvFolder, csvName))
+    df = pd.read_csv(join(csv_path, csvName))
 
     return render_template("crawler.html", column_names=df.columns.values, row_data=list(df.values.tolist()), zip=zip, csv_list = csvList)
 
-
+##########Crawler############``
 @app.route('/getCrawler', methods=['POST', 'GET'])
 def crawler():
     if request.method == 'POST':
@@ -51,7 +58,9 @@ def crawler():
         if crawler == "TW":
             try:
                 old_list = getFiles()
-                result = system('python twitter.py')
+                path = join(crawlerFolder, 'test.py')
+                execCommand = 'python ' + path
+                result = system(execCommand)
                 if result == 0:
                     print("Crawler run successful")
                     csv_list = getGeneratedCSV(old_list)
@@ -197,8 +206,7 @@ def getGeneratedCSV(old_list):
     return generated   
 
 def getFiles():
-    path = '../csv/'
-    list_of_files = listdir(path)
+    list_of_files = listdir(csv_path)
     csv_list = []
     for file in list_of_files:
         if file.endswith('.csv'):
