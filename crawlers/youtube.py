@@ -3,6 +3,7 @@ import csv
 from datetime import datetime
 from apiclient.discovery import build
 import pandas as pd
+from os.path import join
 
 #Comment CSV
 Gyoutubefilename=" "
@@ -339,7 +340,7 @@ with open("input.txt", "r") as file:
     num_video =eval(num_video)
 #Marvel Entertainment
 
-dirly='../csv/'
+dirly=join('assets','csv')
 #Create comment csv
 Gyoutubefilename=createfilename(dirly)
 Gcsv = start_csv(Gyoutubefilename)

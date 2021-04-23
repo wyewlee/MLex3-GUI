@@ -3,6 +3,7 @@ import csv
 import pandas as pd
 import datetime as datetime
 from datetime import datetime
+from os.path import join
 
 reddit = praw.Reddit(client_id='2L4M15duljh4ZQ', 
                      client_secret='YeX3suRgyp-u2AFvDehx1o_twft6ww', 
@@ -62,14 +63,15 @@ topics_data['url'] = url
 topics_data
 
 #csvFileDetail = '../csv/RD_details_'+keyword+'_'+Cdate+'_'+Ctime+'.csv'
-topics_data.to_csv('../csv/RD_details_'+keyword+'_'+Cdate+'_'+Ctime2+'.csv', index=False) 
+csvPath = join('assets','csv')
+topics_data.to_csv(csvPath+'RD_details_'+keyword+'_'+Cdate+'_'+Ctime2+'.csv', index=False) 
 
 url_list = topics_data['url']
 print(url_list)
 
 
 
-csvFileComment = '../csv/RD_comment_'+keyword+'_'+Cdate+'_'+Ctime2+'.csv'
+csvFileComment = (csvPath+'RD_comment_'+keyword+'_'+Cdate+'_'+Ctime2+'.csv')
 with open(csvFileComment, 'w', newline='',encoding="utf-8") as file:
     writer = csv.writer(file)
     writer.writerow(["author", "comment", "URL", "Comment Time", "Crawl Time"])

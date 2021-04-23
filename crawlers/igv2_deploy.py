@@ -5,12 +5,15 @@ import re
 import pandas as pd
 from datetime import datetime
 import csv
+from os.path import join
 
 global code_list
 global handle
 global json
-browser = webdriver.Chrome(executable_path=r'C:\WebDriver\bin\chromedriver.exe')
-directory = ''
+global driverPath
+driverPath = join('assets','dependency','chromedriver.exe')
+browser = webdriver.Chrome(executable_path=driverPath)
+directory = join('assets','csv')
 global_csvname = ''
 global global_csvfilename
 
@@ -21,7 +24,7 @@ global global_csvfilename
 def login():
 
     username = '1906837crawler'
-    pw = '1906837CRAWLERyewlee'
+    pw = '1906837CRAWLER'
 
     browser.get('https://www.instagram.com/')
     sleep(5)

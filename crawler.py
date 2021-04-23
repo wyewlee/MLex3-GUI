@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify, make_response
 import pandas as pd
-from os import listdir, system
+from os import listdir, system,chdir
 from os.path import isfile, join, getctime
 import websockets
 import asyncio
@@ -12,7 +12,6 @@ message = ""
 global csvFolder
 global csv_path
 global crawlerFolder
-global crawler_path
 
 assetsFolder = join("assets")
 csvFolder = join("csv")
@@ -58,9 +57,8 @@ def crawler():
         if crawler == "TW":
             try:
                 old_list = getFiles()
-                path = join(crawlerFolder, 'test.py')
-                execCommand = 'python ' + path
-                result = system(execCommand)
+                chdir(crawlerFolder)
+                result = system('python twitter.py')
                 if result == 0:
                     print("Crawler run successful")
                     csv_list = getGeneratedCSV(old_list)
@@ -76,6 +74,7 @@ def crawler():
         elif crawler == "YT":
             try:
                 old_list = getFiles()
+                chdir(crawlerFolder)
                 result = system('python youtube.py')
                 if result == 0:
                     print("Crawler run successful")
@@ -92,7 +91,11 @@ def crawler():
         elif crawler == "FB":
             try:
                 old_list = getFiles()
-                result = system('python Facepager/src/Facepager.py')
+                facepageFolder = join('Facepager','src')
+                facepagerPath = join(crawlerFolder,facepageFolder)
+                chdir(facepagerPath)
+                print(facepagerPath)
+                result = system('python Facepager.py')
                 if result == 0:
                     print("Crawler run successful")
                     csv_list = getGeneratedCSV(old_list)
@@ -108,7 +111,8 @@ def crawler():
         elif crawler == "IG":
             try:
                 old_list = getFiles()
-                result = system('python ig.py')
+                chdir(crawlerFolder)
+                result = system('python igv2_deploy.py')
                 if result == 0:
                     print("Crawler run successful")
                     csv_list = getGeneratedCSV(old_list)
@@ -125,6 +129,7 @@ def crawler():
             # to be updated
             try:
                 old_list = getFiles()
+                chdir(crawlerFolder)
                 result = system('python reddit.py')
                 if result == 0:
                     print("Crawler run successful")

@@ -20,6 +20,7 @@ import time
 import csv
 import sys
 from datetime import datetime
+from os.path import join
 
 Gtwitterfilename=" "
 Gcsvfile=" "
@@ -238,7 +239,7 @@ access_token_secret = "tctlatGhbj1Hvxkl92CCin0KxpjhQBnOXN2Tmw0e32N6i"
 no_of_tweets_per_csvfile = 100
 sleeping_time = 60
 #dirly="C:\\Users\\User\\"
-dirly="/home/limtm/"
+dirly=join('assets','csv')
 
 Gtwitterfilename=createfilename(dirly)
 Gcsv = start_csv(Gtwitterfilename)
