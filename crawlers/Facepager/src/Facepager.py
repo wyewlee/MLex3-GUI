@@ -120,7 +120,7 @@ class MainWindow(QMainWindow):
             #1 minute
             sleeptime=60
             print("sleeping for "+str(sleeptime)+'second(s)')
-           time.sleep(sleeptime)
+            time.sleep(sleeptime)
 
         print('\nFetching comments')
         self.levelEdit.setMinimum(2)
@@ -146,7 +146,8 @@ class MainWindow(QMainWindow):
         
         #export to csv
         d1 = datetime.now().strftime("%d%m%Y_%H%M%S")
-        csvpath = r'../csv/fb_'+d1+'.csv'
+        csvFolder = join('..','assets','csv','')
+        csvpath = csvFolder+'fb_'+d1+'.csv'
         output = open(csvpath, 'w', newline='', encoding='utf8')
         ExportFileDialog(self).exportAllNodes(output) 
         print('fb_'+d1+'.csv')

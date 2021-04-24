@@ -4,35 +4,36 @@
 #messageBox{
     height:35vh;
     width:40vw;
-    border:1px solid #ccc;
+    border:1px solid #0077b6;
     font:16px/26px Georgia, Garamond, Serif;
     overflow:auto;
     margin-top:0px;
+    box-shadow: 1px 1px 10px 1px#888888;
+    background-color: rgba(255, 255, 255, 0.925);
 }
 /* CSS for bottom two part box */
 
 #csvBox1 {
-    float: left;
-    height: 75vmin;
-    width: 10vw;
-    max-height: 75vmin;
-    max-width: 10vw;
-    border: 2px solid black;
-    font-size: 20px;
-    overflow: auto;
-    margin-left: 23%;
-}
-
-#csvBox2 {
-    float: left;
-    height: 75vmin;
-    width: 60%;
-    max-height: 75vmin;
-    max-width: 70vw;
-    border: 2px solid black;
+    height: 25vmin;
+    width: 90%;
+    border: 1px solid #0077b6;
     font-size: 20px;
     overflow: auto;
     margin-left: 15px;
+    padding:10px;
+    box-shadow: 1px 1px 10px 1px#888888;
+    background-color: rgba(255, 255, 255, 0.925);
+}
+
+#csvBox2 {
+    height: 75vmin;
+    width: 90%;
+    border: 1px solid #0077b6;
+    font-size: 20px;
+    overflow: auto;
+    margin-left: 15px;
+    box-shadow: 1px 1px 10px 1px#888888;
+    background-color: rgba(255, 255, 255, 0.925);
 }
 
 /* Yew Lee's Table CSS starts here */
@@ -47,14 +48,22 @@ table {
 
 td,
 th {
-    border: 1px solid #dddddd;
+    border: 1px solid #000000;
     text-align: left;
-    padding: 8px;
 }
 
+
 tr:nth-child(even) {
-    background-color: #dddddd;
+    background-color: #d4e3e6;
 }
 
 /* HW's Css */
+.boxTitle{
+    margin-left: 15px;
+    font-size:25px;
+}
 
+input, #crawler{
+    background-color: rgba(255, 255, 255, 0.925);
+    border: 1px solid #0077b6;
+}

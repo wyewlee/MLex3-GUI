@@ -38,7 +38,7 @@
 <body>
 
     <div id="mySidenav" class="sidenav">
-        <a href="/crawler" id="a" style='background-color: #0000A0'>Crawlers</a>
+        <a href="/crawler" id="a" style='background-color: #03045e'>Crawlers</a>
         <a href="b.html" id="b">Mrj, MWE, ENR Generation </a>
         <a href="connectDB.html" id="c">MWE, ENR, Mrj</a>
         <a href="d.html" id="d">Sentiment and Emotion</a>
@@ -187,12 +187,22 @@
 
     <br>
 
+    <br>
+    <div class="boxTitle">
+        CSV files
+    </div>
+
     <div id="csvBox1" style="white-space: nowrap;">
 
         {% for csv in csv_list %}
         <a href="/getCSV?csvName={{csv}}" style="text-decoration: none; color: #48574c;">{{csv}}</a>
         <br>
         {% endfor %}
+    </div>
+
+    <br>
+    <div class="boxTitle">
+        Data
     </div>
 
     <div id="csvBox2">

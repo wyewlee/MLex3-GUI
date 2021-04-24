@@ -1,3 +1,8 @@
+
+body{
+  background-color: #caf0f8;
+}
+
 /* Style the links inside the sidenav */
 #mySidenav a {
   position: absolute; /* Position them relative to the browser window */
@@ -20,22 +25,22 @@
   /* The about link: 20px from the top with a green background */
   #a {
     top: 20px;
-    background-color: #2196F3;
+    background-color: #00b4d8;
   }
   
   #b {
     top: 80px;
-    background-color: #2196F3; /* Blue */
+    background-color: #00b4d8; /* Blue */
   }
   
   #c {
     top: 140px;
-    background-color:  #2196F3; /* Red */
+    background-color:  #00b4d8; /* Red */
   }
   
   #d {
     top: 200px;
-    background-color: #2196F3 /* Light Black */
+    background-color: #00b4d8 /* Light Black */
   }
 
   #rightContent {

@@ -11,8 +11,8 @@ global code_list
 global handle
 global json
 global driverPath
-# driverPath = join('..','assets','dependency','89chromedriver.exe') version89
-driverPath = join('..','assets','dependency','90chromedriver.exe') #version90
+driverPath = join('..','assets','dependency','89chromedriver.exe') #version89
+# driverPath = join('..','assets','dependency','90chromedriver.exe') #version90
 browser = webdriver.Chrome(executable_path=driverPath)
 directory = join('..','assets','csv','')
 global_csvname = ''
