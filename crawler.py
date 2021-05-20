@@ -196,12 +196,12 @@ def num():
         
 @app.route('/getDir', methods=['POST', 'GET'])
 def dir():
+    global csv_path
     csvwlcmsg = 'Choose CSV on the left box to show contents!'
     if request.method == 'POST':
         try:
-            global csvFolder
-            csvFolder = request.form["dir"]
-            csvList = listdir(csvFolder)
+            csv_path = request.form["dir"]
+            csvList = listdir(csv_path)
         except:
             return render_template("crawler.html")
         
